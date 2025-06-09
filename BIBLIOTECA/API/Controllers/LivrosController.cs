@@ -46,6 +46,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
+
         public async Task<IActionResult> BuscarPorId(int id)
         {
             var livro = await _context.Livros
@@ -61,7 +62,7 @@ namespace API.Controllers
                 livro.Titulo,
                 livro.Autor,
                 livro.CategoriaId,
-                Categoria = new { livro.Categoria.Id, livro.Categoria.Nome }
+                Categoria = new { livro.Categoria!.Id, livro.Categoria.Nome }
             };
 
             return Ok(resultado);
