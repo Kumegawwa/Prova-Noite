@@ -66,5 +66,23 @@ namespace API.Controllers
 
             return Ok(resultado);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ListarTodos()
+        {
+            var livros = await _context.Livros
+                .Include(l => l.Categoria)
+                .Select(l => new
+                {
+                    l.Id,
+                    l.Titulo,
+                    l.Autor,
+                    l.CategoriaId,
+                    Categoria = new { l.Categoria!.Id, l.Categoria.Nome }
+                })
+                .ToListAsync();
+
+            return Ok(livros);
+        }
     }
 }
