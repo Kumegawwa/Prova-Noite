@@ -1,29 +1,34 @@
-### Criar livro válido
-POST https://localhost:5001/api/livros
+### Listar todos os livros
+GET https://localhost:5001/api/livros
+
+### Buscar livro por ID (existente)
+GET https://localhost:5001/api/livros/1
+
+### Buscar livro por ID (inexistente)
+GET https://localhost:5001/api/livros/999
+
+### Atualizar livro válido
+PUT https://localhost:5001/api/livros/1
 Content-Type: application/json
 
 {
-  "titulo": "Dom Casmurro",
-  "autor": "Machado de Assis",
+  "titulo": "Livro Atualizado",
+  "autor": "Autor Atualizado",
   "categoriaId": 1
 }
 
-### Criar livro com título inválido
-POST https://localhost:5001/api/livros
+### Atualizar livro com categoria inválida
+PUT https://localhost:5001/api/livros/1
 Content-Type: application/json
 
 {
-  "titulo": "Oi",
-  "autor": "Machado de Assis",
-  "categoriaId": 1
-}
-
-### Criar livro com categoria inválida
-POST https://localhost:5001/api/livros
-Content-Type: application/json
-
-{
-  "titulo": "Vidas Secas",
-  "autor": "Graciliano Ramos",
+  "titulo": "Livro Novo",
+  "autor": "Autor X",
   "categoriaId": 999
 }
+
+### Remover livro existente
+DELETE https://localhost:5001/api/livros/1
+
+### Remover livro inexistente
+DELETE https://localhost:5001/api/livros/999

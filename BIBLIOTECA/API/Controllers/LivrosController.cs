@@ -86,40 +86,52 @@ namespace API.Controllers
             return Ok(livros);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> AtualizarLivro(int id, [FromBody] Livro livroAtualizado)
-        {
-            var livroExistente = await _context.Livros.FindAsync(id);
-            if (livroExistente == null)
-                return NotFound(new { mensagem = $"Livro com ID {id} não encontrado para atualização." });
-
-            if (string.IsNullOrWhiteSpace(livroAtualizado.Titulo) || livroAtualizado.Titulo.Length < 3)
-                return BadRequest(new { mensagem = "Título deve ter no mínimo 3 caracteres." });
-
-            if (string.IsNullOrWhiteSpace(livroAtualizado.Autor) || livroAtualizado.Autor.Length < 3)
-                return BadRequest(new { mensagem = "Autor deve ter no mínimo 3 caracteres." });
-
-            var categoria = await _context.Categorias.FindAsync(livroAtualizado.CategoriaId);
-            if (categoria == null)
-                return NotFound(new { mensagem = "Categoria inválida. O ID da categoria fornecido não existe." });
-
-            // Atualização
-            livroExistente.Titulo = livroAtualizado.Titulo;
-            livroExistente.Autor = livroAtualizado.Autor;
-            livroExistente.CategoriaId = livroAtualizado.CategoriaId;
-
-            await _context.SaveChangesAsync();
-
-            var resultado = new
+            public async Task<IActionResult> AtualizarLivro(int id, [FromBody] Livro livroAtualizado)
             {
-                livroExistente.Id,
-                livroExistente.Titulo,
-                livroExistente.Autor,
-                livroExistente.CategoriaId,
-                Categoria = new { categoria.Id, categoria.Nome }
-            };
+                var livroExistente = await _context.Livros.FindAsync(id);
+                if (livroExistente == null)
+                    return NotFound(new { mensagem = $"Livro com ID {id} não encontrado para atualização." });
 
-            return Ok(resultado);
-        }
+                if (string.IsNullOrWhiteSpace(livroAtualizado.Titulo) || livroAtualizado.Titulo.Length < 3)
+                    return BadRequest(new { mensagem = "Título deve ter no mínimo 3 caracteres." });
+
+                if (string.IsNullOrWhiteSpace(livroAtualizado.Autor) || livroAtualizado.Autor.Length < 3)
+                    return BadRequest(new { mensagem = "Autor deve ter no mínimo 3 caracteres." });
+
+                var categoria = await _context.Categorias.FindAsync(livroAtualizado.CategoriaId);
+                if (categoria == null)
+                    return NotFound(new { mensagem = "Categoria inválida. O ID da categoria fornecido não existe." });
+
+                // Atualização
+                livroExistente.Titulo = livroAtualizado.Titulo;
+                livroExistente.Autor = livroAtualizado.Autor;
+                livroExistente.CategoriaId = livroAtualizado.CategoriaId;
+
+                await _context.SaveChangesAsync();
+
+                var resultado = new
+                {
+                    livroExistente.Id,
+                    livroExistente.Titulo,
+                    livroExistente.Autor,
+                    livroExistente.CategoriaId,
+                    Categoria = new { categoria.Id, categoria.Nome }
+                };
+
+                return Ok(resultado);
+            }
+        [HttpDelete("{id}")]
+            public async Task<IActionResult> RemoverLivro(int id)
+            {
+                var livro = await _context.Livros.FindAsync(id);
+                if (livro == null)
+                    return NotFound(new { mensagem = $"Livro com ID {id} não encontrado para remoção." });
+
+                _context.Livros.Remove(livro);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
 
     }
 }
