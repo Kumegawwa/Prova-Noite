@@ -1,10 +1,29 @@
-### Lista de Livros
-GET http://localhost:5231
-
-### Cadastrar Livro
-POST http://localhost:5231
+### Criar livro válido
+POST https://localhost:5001/api/livros
 Content-Type: application/json
 
 {
+  "titulo": "Dom Casmurro",
+  "autor": "Machado de Assis",
+  "categoriaId": 1
+}
 
+### Criar livro com título inválido
+POST https://localhost:5001/api/livros
+Content-Type: application/json
+
+{
+  "titulo": "Oi",
+  "autor": "Machado de Assis",
+  "categoriaId": 1
+}
+
+### Criar livro com categoria inválida
+POST https://localhost:5001/api/livros
+Content-Type: application/json
+
+{
+  "titulo": "Vidas Secas",
+  "autor": "Graciliano Ramos",
+  "categoriaId": 999
 }

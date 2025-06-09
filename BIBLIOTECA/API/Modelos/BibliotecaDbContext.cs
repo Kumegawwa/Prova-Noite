@@ -1,26 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Modelos;
-
-public class BibliotecaDbContext : DbContext
+namespace API.Modelos
 {
-    public DbSet<Livro> Livros { get; set; }
-    public DbSet<Categoria> Categorias { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public class BibliotecaDbContext : DbContext
     {
-        optionsBuilder.UseSqlite("Data Source=biblioteca.db");
-    }
+        public BibliotecaDbContext(DbContextOptions<BibliotecaDbContext> options)
+            : base(options)
+        {
+        }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Categoria>().HasData(
-            new Categoria() { Id = 1, Nome = "Poesia" },
-            new Categoria() { Id = 2, Nome = "Romance" },
-            new Categoria() { Id = 3, Nome = "Fantasia" },
-            new Categoria() { Id = 4, Nome = "Ficção Científica" },
-            new Categoria() { Id = 5, Nome = "Literatura Infantil" }
-        );
+        public DbSet<Livro> Livros => Set<Livro>();
+        public DbSet<Categoria> Categorias => Set<Categoria>();
     }
-
 }
